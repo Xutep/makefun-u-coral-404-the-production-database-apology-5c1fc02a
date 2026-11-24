@@ -22,6 +22,10 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(text + "\n")
+    # Read-back verification: the file on disk must be byte-identical
+    # to what was written, so a silent write failure can never pass.
+    with open("/output/entry.txt", "r", encoding="utf-8") as f:
+        assert f.read() == text + "\n", "entry.txt read-back mismatch"
 
 
 if __name__ == "__main__":
